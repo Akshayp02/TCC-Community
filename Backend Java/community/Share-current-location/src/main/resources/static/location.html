@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Share Current Location</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 50px;
+            text-align: center;
+        }
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Share Your Current Location</h1>
+    <button onclick="getCurrentLocation()">📍 Share Current Location</button>
+
+    <script>
+        function getCurrentLocation() {
+            // Check if geolocation is supported by the browser
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    // On success, get the latitude and longitude
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+
+                    // Show a message with latitude and longitude
+                    alert("Latitude: " + latitude + "\nLongitude: " + longitude);
+
+                    // Sending location data to the backend API
+                    fetch("http://localhost:8021/api/location/shareCurrentLocation", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            userId: 101,  // Use dynamic user ID if needed
+                            latitude: latitude,
+                            longitude: longitude
+                        })
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            return response.text();
+                        } else {
+                            throw new Error("Error from backend: " + response.status);
+                        }
+                    })
+                    .then(data => {
+                        alert("✅ Location shared successfully!");
+                        console.log("Server Response:", data);
+                    })
+                    .catch(error => {
+                        console.error("❌ Error:", error);
+                        alert("❌ Error sharing location: " + error.message);
+                    });
+                }, function(error) {
+                    // Handle geolocation errors (e.g., permission denied, timeout)
+                    alert("❌ Geolocation error: " + error.message);
+                });
+            } else {
+                // Geolocation is not supported by the browser
+                alert("❌ Geolocation is not supported by this browser.");
+            }
+        }
+    </script>
+</body>
+</html>
