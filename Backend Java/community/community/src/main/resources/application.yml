@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: community
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/server_community
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: root
+    password: root
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 10
+      auto-commit: false
+      pool-name: HikariPool-1
+      transaction-isolation: TRANSACTION_READ_COMMITTED
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+server:
+  port: 8080
+
+jwt:
+  secret: thisIsMysecregtfrdesww233eggtffeeddgkjjhhtdhttebd54ndhdhfhhhshs8877465sbbdd
+  expiration: 3600000

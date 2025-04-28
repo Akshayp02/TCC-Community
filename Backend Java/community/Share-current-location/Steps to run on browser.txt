@@ -1,0 +1,52 @@
+🧪 Step-by-Step Testing in the Browser:
+1. Open the HTML Page
+Open a web browser (like Chrome).
+
+Go to:
+
+bash
+Copy
+Edit
+http://localhost:8080/location.html
+2. Click the Button
+You’ll see a button:
+[ Share Current Location ]
+
+Click on it.
+
+3. Browser Asks for Permission
+A popup will appear at the top of the browser window asking:
+
+“location.html wants to know your location”
+
+Click “Allow”.
+
+4. Backend Request Happens Automatically
+Once you allow:
+
+JavaScript uses navigator.geolocation.getCurrentPosition() to get latitude and longitude.
+
+It then sends a POST request to your Spring Boot backend:
+
+bash
+Copy
+Edit
+http://localhost:8080/api/location/shareCurrentLocation
+With JSON data like:
+
+json
+Copy
+Edit
+{
+  "userId": 101,
+  "latitude": 18.5204,
+  "longitude": 73.8567
+}
+5. You’ll See a Message
+✅ If successful, a pop-up alert will say:
+
+Location shared successfully!
+
+❌ If there's an issue:
+
+Error sharing location
