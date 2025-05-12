@@ -1,18 +1,16 @@
-package com.codingcult.Group_service.Service;
+package com.codingcult.Group_service.service;
 
-
-import com.codingcult.Group_service.Entity.Group;
-import com.codingcult.Group_service.Entity.GroupMember;
-import com.codingcult.Group_service.Repository.GroupMemberRepository;
-import com.codingcult.Group_service.Repository.GroupRepository;
+import com.codingcult.Group_service.model.Group;
+import com.codingcult.Group_service.model.GroupMember;
+import com.codingcult.Group_service.repository.GroupMemberRepository;
+import com.codingcult.Group_service.repository.GroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
-public class GroupServiceImpl implements GroupService {
+class GroupServiceImpl implements GroupService {
 
     @Autowired
     private GroupRepository groupRepository;
@@ -26,7 +24,6 @@ public class GroupServiceImpl implements GroupService {
         group.setGroupName(groupName);
         group.setUsername(username);
         group.setDescription(description); // Set a default description
-        group.setCreatedByUserId(createdByUserId);
         Group savedGroup = groupRepository.save(group);
 
         // Add creator as admin member
@@ -40,7 +37,6 @@ public class GroupServiceImpl implements GroupService {
         return savedGroup;
     }
 
-
     @Override
     public Group getGroupById(Long groupId) {
         return groupRepository.findById(groupId)
@@ -48,21 +44,28 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public List<Group> getGroupsByUser(Long userId) {
-        return groupRepository.findByCreatedByUserId(userId);
+    public List<Group> getGroupsByUser(String username) {
+        List<GroupMember> memberships = groupMemberRepository.findByUsername(username);
+        return memberships.stream().map(GroupMember::getGroup).toList();
     }
 
+    @Override
+    public List<Group> getGroupsByUsername(String username) {
+        List<GroupMember> memberships = groupMemberRepository.findByUsername(username);
+        return memberships.stream().map(GroupMember::getGroup).toList();
+    }
+
+    @Override
     public GroupMember addMemberToGroup(Long groupId, Long userId, String username, boolean isAdmin) {
         Group group = groupRepository.findById(groupId)
-                .orElseThrow(() -> new IllegalArgumentException("Group not found"));
-
+                .orElseThrow(() -> new RuntimeException("Group not found"));
         GroupMember member = new GroupMember();
         member.setGroup(group);
         member.setUserId(userId);
-        member.setUsername(username); // Set the username
+        member.setUsername(username);
         member.setAdmin(isAdmin);
 
-        return groupMemberRepository.save(member);
+        return groupMemberRepository.save(member); // 🔥 This line is required to persist the member
     }
 
     @Override
@@ -88,7 +91,6 @@ public class GroupServiceImpl implements GroupService {
         groupRepository.delete(group);
     }
 
-
     @Override
     public boolean isMember(Long groupId, String username) {
         Group group = getGroupById(groupId);
@@ -106,5 +108,17 @@ public class GroupServiceImpl implements GroupService {
         return groupMemberRepository.existsByGroupAndUsername(group, username);
     }
 
+    @Override
+    public Group updateGroup(Long groupId, String groupName, String description) {
+        Group group = groupRepository.findById(groupId)
+                .orElseThrow(() -> new RuntimeException("Group not found with ID: " + groupId));
+        group.setGroupName(groupName);
+        group.setDescription(description);
+        return groupRepository.save(group);
+    }
 
+    @Override
+    public List<Group> getGroupsByUser(Long userId) {
+        return List.of();
+    }
 }

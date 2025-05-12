@@ -1,4 +1,4 @@
-package com.thecodingcult.chat_service.Config;
+package com.thecodingcult.chat_service.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

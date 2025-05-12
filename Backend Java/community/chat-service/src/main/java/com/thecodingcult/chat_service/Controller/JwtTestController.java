@@ -1,4 +1,4 @@
-package com.thecodingcult.chat_service.Controller;
+package com.thecodingcult.chat_service.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;

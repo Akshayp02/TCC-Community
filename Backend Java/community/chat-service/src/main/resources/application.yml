@@ -4,7 +4,7 @@ server:
 
 spring:
   application:
-    name:chat-service
+    name: chat-service
   datasource:
     url: jdbc:mysql://localhost:3306/server_community
     username: root
@@ -13,25 +13,11 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
-  redis:
-    host: localhost
-    port: 6379
-    password: # Add password if Redis is secured
-    timeout: 6000
+
 jwt:
   secret: thisIsMysecregtfrdesww233eggtffeeddgkjjhhtdhttebd54ndhdhfhhhshs8877465sbbdd
   expiration: 3600000
 
-kafka:
-  bootstrap-servers: localhost:9092
-  topic: notification-topic
-
-cloud:
-  provider: cloudinary
-  api-key: your_api_key
-  secret: your_secret
-
 group:
   service:
     url: http://localhost:8081
-

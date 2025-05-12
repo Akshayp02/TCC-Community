@@ -1,19 +1,34 @@
-package com.thecodingcult.chat_service.Service;
+package com.thecodingcult.chat_service.service;
 
-import com.thecodingcult.chat_service.Entity.DTO.MessageDTO;
-import com.thecodingcult.chat_service.Entity.Message;
+import com.thecodingcult.chat_service.dto.MessageDTO;
+import com.thecodingcult.chat_service.dto.MessageResponseDTO;
+import com.thecodingcult.chat_service.model.Message;
+import com.thecodingcult.chat_service.model.MessageStatus;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SendMessageService {
 
-    public Message sendMessage(MessageDTO dto) {
-        // Return a dummy message for testing
-        Message dummyMessage = new Message();
-        dummyMessage.setId(1L);
-        dummyMessage.setContent("This is a test message");
-        dummyMessage.setSenderId(123L);
-        dummyMessage.setGroupId(456L);
-        return dummyMessage;
+    public MessageResponseDTO sendMessage(MessageDTO dto) {
+        Message message = new Message();
+        message.setSenderId(dto.getSenderId());
+        message.setGroupId(dto.getGroupId());
+        message.setContent(dto.getContent());
+        message.setType(dto.getType());
+        message.setAttachmentUrl(dto.getAttachmentUrl());
+        message.setTimestamp(java.time.LocalDateTime.now());
+        message.setStatus(MessageStatus.SENT);
+
+        // Save the message to the database (repository logic not shown)
+
+        // Map to DTO
+        MessageResponseDTO responseDTO = new MessageResponseDTO();
+        responseDTO.setId(message.getId());
+        responseDTO.setGroupId(message.getGroupId());
+        responseDTO.setContent(message.getContent());
+        responseDTO.setStatus(message.getStatus());
+        responseDTO.setTimestamp(message.getTimestamp());
+
+        return responseDTO;
     }
 }
