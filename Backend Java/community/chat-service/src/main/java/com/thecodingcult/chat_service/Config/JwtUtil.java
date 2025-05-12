@@ -1,4 +1,4 @@
-package com.thecodingcult.chat_service.Config;
+package com.thecodingcult.chat_service.config;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;

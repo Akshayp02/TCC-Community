@@ -1,4 +1,32 @@
-package com.thecodingcult.chat_service.Controller;
+package com.thecodingcult.chat_service.controller;
+
+import com.thecodingcult.chat_service.model.MessageStatus;
+import com.thecodingcult.chat_service.service.MessageStatusService;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/messages")
+public class MessageController {
+
+    private final MessageStatusService messageStatusService;
+
+    public MessageController(MessageStatusService messageStatusService) {
+        this.messageStatusService = messageStatusService;
+    }
+
+    @PutMapping("/{id}/status")
+    public String updateMessageStatus(@PathVariable Long id, @RequestParam MessageStatus status) {
+        messageStatusService.updateMessageStatus(id, status);
+        if (status != null) {
+            return "✅ if status is valid" + status;
+        } else {
+            return "❌ if status is not valid";
+        }
+    }
+}
+
+
+//package com.thecodingcult.chat_service.Controller;
 //
 //import com.thecodingcult.chat_service.Entity.DTO.GroupValidationResponse;
 //import com.thecodingcult.chat_service.Entity.DTO.MessageRequest;

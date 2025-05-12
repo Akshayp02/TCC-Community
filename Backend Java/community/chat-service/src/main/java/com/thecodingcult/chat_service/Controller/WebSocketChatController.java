@@ -1,4 +1,4 @@
-package com.thecodingcult.chat_service.Controller;
+package com.thecodingcult.chat_service.controller;
 
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -7,8 +7,8 @@ import org.springframework.stereotype.Controller;
 
 import java.security.Principal;
 
-import com.thecodingcult.chat_service.Entity.ChatMessage;
-import com.thecodingcult.chat_service.Service.ChatService;
+import com.thecodingcult.chat_service.model.ChatMessage;
+import com.thecodingcult.chat_service.service.ChatService;
 
 @Controller
 public class WebSocketChatController {

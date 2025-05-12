@@ -1,6 +1,6 @@
-package com.thecodingcult.chat_service.Repository;
+package com.thecodingcult.chat_service.repository;
 
-import com.thecodingcult.chat_service.Entity.ChatMessage;
+import com.thecodingcult.chat_service.model.ChatMessage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

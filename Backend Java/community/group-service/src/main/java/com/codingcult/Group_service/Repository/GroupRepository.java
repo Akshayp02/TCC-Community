@@ -1,7 +1,6 @@
-package com.codingcult.Group_service.Repository;
+package com.codingcult.Group_service.repository;
 
-
-import com.codingcult.Group_service.Entity.Group;
+import com.codingcult.Group_service.model.Group;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,11 +9,9 @@ import java.util.List;
 @Repository
 public interface GroupRepository extends JpaRepository<Group, Long> {
 
-    // Find groups by user ID (created by user)
-    List<Group> findByCreatedByUserId(Long userId);
+    // Get all groups created by a specific username (group creator)
+    List<Group> findByUsername(String username);
 
-    // Optional: Search group by name (if needed)
+    // Optional: Search for groups by partial name (case insensitive)
     List<Group> findByGroupNameContainingIgnoreCase(String groupName);
-
-
 }

@@ -1,14 +1,15 @@
-package com.thecodingcult.chat_service.Controller;
+package com.thecodingcult.chat_service.controller;
 
+import com.thecodingcult.chat_service.dto.ChatMessageResponseDTO;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
 
-import com.thecodingcult.chat_service.Entity.ChatMessage;
-import com.thecodingcult.chat_service.Service.ChatService;
+import com.thecodingcult.chat_service.model.ChatMessage;
+import com.thecodingcult.chat_service.service.ChatService;
 
 @RestController
 @RequestMapping("/api/chat")
@@ -16,18 +17,31 @@ public class ChatController {
 
     private final ChatService chatService;
 
+    @Autowired
     public ChatController(ChatService chatService) {
         this.chatService = chatService;
     }
 
+
+
     @PostMapping("/send")
-    public ResponseEntity<ChatMessage> sendMessage
-            (@RequestBody ChatMessage message,
-             HttpServletRequest requests) {
+    public ResponseEntity<ChatMessageResponseDTO> sendMessage(
+            @RequestBody ChatMessage message,
+            HttpServletRequest requests) {
         String username = (String) requests.getAttribute("username"); // Extracted from JWT
         message.setSender(username);
-        ChatMessage saved = chatService.saveMessage(message);
-        return ResponseEntity.ok(saved);
+        ChatMessage savedMessage = chatService.saveMessage(message);
+
+        // Map ChatMessage to ChatMessageResponseDTO
+        ChatMessageResponseDTO responseDTO = new ChatMessageResponseDTO();
+        responseDTO.setId(savedMessage.getId());
+        responseDTO.setSender(savedMessage.getSender());
+        responseDTO.setContent(savedMessage.getContent());
+        responseDTO.setGroupId(savedMessage.getGroupId());
+        responseDTO.setStatus(savedMessage.getStatus());
+        responseDTO.setTimestamp(savedMessage.getTimestamp());
+
+        return ResponseEntity.ok(responseDTO);
     }
 
     @PutMapping("/edit/{messageId}")

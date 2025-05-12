@@ -1,8 +1,9 @@
-package com.codingcult.Group_service.Service;
+package com.codingcult.Group_service.service;
 
 
-import com.codingcult.Group_service.Entity.Group;
-import com.codingcult.Group_service.Entity.GroupMember;
+import com.codingcult.Group_service.model.Group;
+import com.codingcult.Group_service.model.GroupMember;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -12,9 +13,9 @@ public interface GroupService {
 
     Group getGroupById(Long groupId);
 
-    List<Group> getGroupsByUser(Long userId);
+    List<Group> getGroupsByUser(String username);
 
-    GroupMember addMemberToGroup(Long groupId, Long userId, String username, boolean isAdmin);
+   GroupMember addMemberToGroup(Long groupId, Long userId, String username, boolean isAdmin);
 
     void removeMemberFromGroup(Long groupId, Long userId);
 
@@ -27,4 +28,12 @@ public interface GroupService {
     boolean doesGroupExist(Long groupId);
 
     boolean isUserInGroup(Long groupId, String username);
+
+    Group updateGroup(Long groupId, String groupName, String description);
+
+    List<Group> getGroupsByUser(Long userId);
+
+    List<Group> getGroupsByUsername(String username);
+
+
 }
